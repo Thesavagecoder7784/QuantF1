@@ -24,7 +24,7 @@ def calculate_adaptability_index(year: int, race_name: str, num_segments: int = 
     Calculates the Driver Adaptability Index based on the stability and evolution of lap times.
 
     This analysis captures a driver's execution style by measuring two key dimensions:
-    1.  **Adaptability (Stability):** How consistent are their lap times relative to a dynamic
+    1.  Adaptability (Stability): How consistent are their lap times relative to a dynamic
         benchmark? This is measured by the standard deviation of their lap time deltas.
         A lower standard deviation results in a higher (better) Adaptability Index.
     2.  **Pace Evolution:** How does their average pace change over the course of the race?
@@ -41,7 +41,8 @@ def calculate_adaptability_index(year: int, race_name: str, num_segments: int = 
     print(f"Calculating Driver Adaptability for {year} {race_name}\n")
 
     try:
-        fastf1.Cache.enable_cache('/Users/prabhatm/Documents/GitHub/Formula1/QuantF1/cache')
+        cache_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'cache'))
+        fastf1.Cache.enable_cache(cache_path)
         session = fastf1.get_session(year, race_name, 'R')
         session.load(laps=True, telemetry=False, weather=False, messages=False)
 
@@ -58,7 +59,7 @@ def calculate_adaptability_index(year: int, race_name: str, num_segments: int = 
 
         laps['LapTimeSeconds'] = laps['LapTime'].dt.total_seconds()
 
-        # --- Fuel-Adjusted Stint-Compound Benchmark Calculation (Consistent with Sharpe/Sortino) ---
+        # Fuel-Adjusted Stint-Compound Benchmark Calculation
         stint_compound_groups = laps[['Stint', 'Compound']].drop_duplicates()
         trend_models = {}
         for _, row in stint_compound_groups.iterrows():
@@ -88,16 +89,16 @@ def calculate_adaptability_index(year: int, race_name: str, num_segments: int = 
         
         for driver_number in driver_numbers:
             driver_laps = laps[laps['DriverNumber'] == driver_number].sort_values(by='LapNumber')
-            if len(driver_laps) < num_segments * 2:  # Ensure enough laps for meaningful segmentation
+            if len(driver_laps) < num_segments * 2: 
                 continue
 
-            # --- 1. Overall Stability (Adaptability Index) ---
+            # 1. Overall Stability (Adaptability Index)
             # The core metric: negative standard deviation of lap time deltas.
             # Lower variability -> higher adaptability (less negative index).
             overall_std_dev = driver_laps['LapTimeDelta'].std()
             adaptability_index = -overall_std_dev
 
-            # --- 2. Temporal Evolution Analysis ---
+            # 2. Temporal Evolution Analysis
             lap_segments = np.array_split(driver_laps, num_segments)
             segment_metrics = []
             for i, segment in enumerate(lap_segments):
@@ -113,11 +114,11 @@ def calculate_adaptability_index(year: int, race_name: str, num_segments: int = 
 
             segment_df = pd.DataFrame(segment_metrics)
             
-            # --- Pace Evolution (Trend of mean lap time delta) ---
+            # Pace Evolution (Trend of mean lap time delta)
             # A negative slope is good (deltas are decreasing, so pace is improving vs benchmark)
             pace_slope, _, _, _, _ = linregress(segment_df['segment'], segment_df['mean_delta'])
             
-            # --- Consistency Evolution (Trend of lap time stability) ---
+            # Consistency Evolution (Trend of lap time stability)
             consistency_slope, _, _, _, _ = linregress(segment_df['segment'], segment_df['std_delta'].fillna(0))
 
             driver_info = session.get_driver(driver_number)
