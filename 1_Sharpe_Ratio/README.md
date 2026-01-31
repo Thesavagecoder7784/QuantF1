@@ -1,6 +1,6 @@
 # Formula 1 Driver Performance: Stint-Adjusted Sharpe Ratio
 
-This project provides a quantitative framework for analyzing Formula 1 driver performance by adapting the Sharpe Ratio, a classic metric from finance used to measure risk-adjusted return.
+This project provides a quantitative framework for analyzing Formula 1 driver performance by adapting the Sharpe Ratio, a classic finance metric that measures risk-adjusted return.
 
 In this context, we define:
 - **Return**: A driver's pace relative to a dynamic, fuel- and tire-adjusted benchmark.
@@ -46,24 +46,6 @@ The `Mean(LapTimeDelta)` is negated because a lower (more negative) delta signif
 
 -   `driver_sharpe_ratio.py`: The main script that performs the analysis for a given race. It calculates the Sharpe Ratio for all drivers and generates the output files.
 -   `visualize_stint_modeling.py`: A utility script to generate a plot that visualizes the underlying regression model for a single driver's stints. This is useful for debugging and verifying the benchmark's accuracy.
-
-## How to Run the Analysis
-
-1.  **Main Analysis**:
-    -   Open `driver_sharpe_ratio.py`.
-    -   Modify the `year` and `race_name` variables inside the `main()` function at the bottom of the script.
-    -   Run the script from your terminal:
-        ```bash
-        python QuantF1/1_Sharpe_Ratio/driver_sharpe_ratio.py
-        ```
-
-2.  **Visualize a Driver's Stint Model**:
-    -   Open `visualize_stint_modeling.py`.
-    -   Modify the `year`, `race_name`, and `driver_abbr` variables at the bottom of the script.
-    -   Run the script:
-        ```bash
-        python QuantF1/1_Sharpe_Ratio/visualize_stint_modeling.py
-        ```
 
 ## Interpreting the Output
 
