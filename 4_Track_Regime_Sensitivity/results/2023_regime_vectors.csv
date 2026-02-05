@@ -1,0 +1,23 @@
+Degradation,Degradation Score,Overtaking,Overtaking Score,Power vs Downforce Sensitivity,Full Throttle %,Volatility,Disruption %,Race
+Moderate,0.09486191930763381,Raceable,13,Power-Leaning,0.5829903978052127,Stable,0.0,Bahrain Grand Prix
+Low,0.026290030180668656,Raceable,27,Power-Leaning,0.648876404494382,Stable,0.04,Saudi Arabian Grand Prix
+Low,0.004593018745959806,Overtake-Heavy,40,Power-Dominant,0.665016501650165,Stable,0.034482758620689655,Australian Grand Prix
+Low,0.0025065429360893584,Raceable,17,Power-Leaning,0.5969773299748111,Stable,0.0392156862745098,Azerbaijan Grand Prix
+Low,0.011981874330020095,Raceable,23,Balanced,0.5284671532846715,Stable,0.0,Miami Grand Prix
+Low,0.03399153290085234,Processional,9,Downforce-Dominant,0.35456110154905335,Chaotic,0.21794871794871795,Monaco Grand Prix
+Moderate,0.0604300393953078,Raceable,17,Power-Leaning,0.5746140651801029,Stable,0.0,Spanish Grand Prix
+Low,0.031174923425380887,Raceable,26,Power-Leaning,0.6060070671378092,Stable,0.04285714285714286,Canadian Grand Prix
+Moderate,0.059615967479327514,Raceable,24,Power-Dominant,0.6693069306930693,Stable,0.014084507042253521,Austrian Grand Prix
+Low,0.006284331019133125,Raceable,29,Power-Leaning,0.6402877697841727,Chaotic,0.07692307692307693,British Grand Prix
+Moderate,0.06713253728450697,Processional,4,Downforce-Dominant,0.476038338658147,Stable,0.0,Hungarian Grand Prix
+High,0.1581765520781772,Raceable,20,Power-Leaning,0.5757946210268948,Chaotic,0.5454545454545454,Belgian Grand Prix
+Low,0.02055648153476919,Overtake-Heavy,38,Balanced,0.5464285714285714,Chaotic,1.0694444444444444,Dutch Grand Prix
+Moderate,0.06637224467941222,Raceable,15,Power-Dominant,0.6546310832025117,Stable,0.0,Italian Grand Prix
+Low,0.02423393799818012,Overtake-Heavy,62,Downforce-Dominant,0.42779291553133514,Stable,0.03225806451612903,Singapore Grand Prix
+High,0.10634129257440438,Processional,8,Balanced,0.5221606648199446,Stable,0.03773584905660377,Japanese Grand Prix
+Low,0.0323092651339776,Raceable,14,Power-Leaning,0.6166134185303515,Stable,0.03508771929824561,Qatar Grand Prix
+Moderate,0.04464580305294663,Overtake-Heavy,33,Balanced,0.5026666666666667,Stable,0.0,United States Grand Prix
+Moderate,0.055664747051301526,Raceable,26,Downforce-Dominant,0.41,Stable,0.014084507042253521,Mexico City Grand Prix
+Moderate,0.0713980290153627,Raceable,23,Balanced,0.5394495412844037,Stable,0.0,São Paulo Grand Prix
+Low,0.0120351901059638,Overtake-Heavy,49,Power-Dominant,0.6516220028208745,Chaotic,0.06,Las Vegas Grand Prix
+Moderate,0.05706172652925285,Overtake-Heavy,42,Power-Leaning,0.5825825825825826,Stable,0.0,Abu Dhabi Grand Prix
