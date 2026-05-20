@@ -205,3 +205,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+0_Foundational_Regression/cache
+0_Foundational_Regression/data/processed/*.parquet
+/data
+/cache
