@@ -5,6 +5,10 @@ def classify_anomalies(laps: pd.DataFrame) -> pd.DataFrame:
     """Flag laps that should be excluded from clean-pace analysis."""
     laps['anomaly_flag'] = 'normal'
 
+    # Lap 1 excluded from pace analysis: standing-start effects dominate.
+    # Lap-1-specific performance handled separately in StartPerformance module.
+    laps.loc[laps['LapNumber'] == 1, 'anomaly_flag'] = 'race_start'
+
     laps.loc[laps['PitOutTime'].notna() & (laps['anomaly_flag'] == 'normal'), 'anomaly_flag'] = 'out_lap'
     laps.loc[laps['PitInTime'].notna() & (laps['anomaly_flag'] == 'normal'), 'anomaly_flag'] = 'in_lap'
 
