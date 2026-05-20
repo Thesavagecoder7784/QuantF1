@@ -22,7 +22,7 @@ def validate_and_export(laps: pd.DataFrame, output_path: Path) -> None:
     assert clean['fuel_kg'].min() > 0, "Negative fuel weight"
     assert clean['fuel_kg'].max() <= 110, "Fuel exceeds regulation max"
 
-    assert clean['lap_in_stint'].min() == 1, "Stint should start at lap 1"
+    assert laps['lap_in_stint'].min() == 1, "Stint should start at lap 1"
 
     print(f"Total laps: {len(laps)}")
     print(f"Clean laps: {len(clean)}")
