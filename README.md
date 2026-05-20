@@ -1,206 +1,76 @@
-# QuantF1 🏁📊🏎️ 
+The overall idea of the project QuantF1 is to better understand the world of F1 using quantitative methods 
 
-A quantitative framework for understanding Formula 1 driver performance under uncertainty
+# Formula 1 Driver Performance: Stint-Adjusted Sharpe Ratio
+The first step in doing that is understanding the Sharpe Ratio of a Driver
+In general, the Sharpe Ratio is a financial metric used to evaluate an investment's return relative to the risk (also considered as its volatility). A higher ratio indicates that the investment has a better risk-adjusted performance. 
 
-QuantF1 applies concepts from quantitative finance, risk management, and statistical learning to Formula 1 race data to model driver performance as a stochastic process, not a highlight reel.
+In this particular context of F1, we define:
+- Return: A driver's pace relative to a dynamic, fuel- and tire-adjusted benchmark.
+- Risk: The inconsistency or volatility in that pace.
 
-Instead of asking “Who’s fastest?”, QuantF1 asks:
+The result is a "Driver Sharpe Ratio" that rewards drivers who are not only fast but also highly consistent, providing a more holistic view of their performance than raw lap times alone.
 
-Who is structurally advantaged, under which conditions, and why?
+# Methodology
 
-The project builds a full analytical arc — from efficiency, to behavior, to context, to resilience, to repeatability — and ends with probabilistic inference rather than deterministic predictions.
+The core of this analysis is a sophisticated benchmarking method that isolates driver performance from changing track conditions, fuel load, and tire degradation.
 
-## Core Philosophy
+## 1. Dynamic, Stint-Specific Benchmarking
+A single benchmark lap time for an entire race is insufficient. This model creates a unique benchmark for each stint and tire compound combination.
+- For each stint/compound group (e.g., all drivers on the Medium tire in their first stint), we fit a linear regression model to the lap times versus the lap number.
+- This model (lap_time = slope * lap_number + intercept) captures the expected pace evolution, naturally accounting for the car getting lighter (fuel burn-off) and tires degrading.
+- The output is a dynamic trendline representing the expected "par" performance for that specific strategic phase of the race.
 
-Formula 1 performance is:
-- Noisy
-- Context-dependent
-- Regime-sensitive
-- Path-dependent
-- Non-stationary
+## 2. Calculating "Returns" (Pace Delta)
 
-So QuantF1 treats each driver as a risk-bearing strategy, each lap as a return, and each race as a realized distribution, not a result.
+For each driver's lap, we calculate the LapTimeDelta:
+LapTimeDelta = ActualLapTime - BenchmarkTime
 
-This repo is not about takes.
-It’s about structure.
+- A negative delta represents a "positive return," as the driver was faster than expected for that lap.
+- A positive delta means the driver was slower than the benchmark.
 
-## Analytical Arc (Step-by-Step Framework)
-### 1. Sharpe Ratio of a Driver — Efficiency
+## 3. Calculating the Sharpe Ratio
 
-Question:
-How much pace does a driver extract per unit of chaos?
+The Sharpe Ratio is calculated for each driver by aggregating their performance across all their stints.
 
-This establishes the baseline distinction between:
+1. Per-Stint Analysis: For each of a driver's stints, we calculate the mean and standard deviation of their LapTimeDelta.
+2. Weighted Aggregation: The final "Driver Sharpe Ratio" is a weighted average of the per-stint Sharpe Ratios, weighted by the number of laps in each stint.
 
-Raw speed
+The formula for a given stint is:
 
-Risk-adjusted performance
+Sharpe Ratio = -Mean(LapTimeDelta) / StdDev(LapTimeDelta)
 
-It proves that “fast” and “efficient” are not the same thing.
+The Mean(LapTimeDelta) is negated because a lower (more negative) delta signifies better performance.
+This aligns the metric so that a higher, positive Sharpe Ratio is always better.
 
-Output: Driver efficiency scores across races and stints
-Role: Baseline lens (used throughout the framework)
+# File Descriptions
 
-### 2. Sortino Ratio of a Driver — Controlled Aggression
+- driver_sharpe_ratio.py: The main script that performs the analysis for a given race. It calculates the Sharpe Ratio for all drivers and generates the output files.
+- visualize_stint_modeling.py: A utility script to generate a plot that visualizes the underlying regression model for a single driver's stints.
 
-Question:
-Which mistakes actually matter?
+# Interpreting the Output
 
-We refine risk from:
+The analysis generates three files in the QuantF1/plots and QuantF1/results directories.
 
-variance → downside variance
+1. Results CSV (results/{year}_{race}_Driver_Sharpe_Ratios.csv)
+This file contains the detailed metrics for each driver, including:
+- Mean Delta vs Benchmark (s): The driver's average pace against the expected trendline. Negative is faster.
+- Lap Time Std Dev (s): The driver's inconsistency. Lower is better.
+- Driver Sharpe Ratio: The final risk-adjusted performance score.
 
-This separates:
+2. Sharpe Ratio Bar Chart (plots/{year}_{race}_Sharpe_Ratio_Bar_Chart.png)
+This chart provides a quick ranking of drivers by their overall risk-adjusted performance.
+- High Positive Ratio: Indicates the driver was significantly faster than expected and highly consistent.
+- Ratio Near Zero: The driver performed close to the benchmark or was inconsistent.
+- Negative Ratio: The driver was, on average, slower than the benchmark.
 
-productive aggression
-from
+3. Pace vs. Consistency Scatter Plot (plots/{year}_{race}_Pace_Consistency_Scatter.png)
+This plot visualizes the two core components of the Sharpe Ratio.
+- Y-axis (Pace): Mean Delta (lower is faster).
+- X-axis (Inconsistency): Lap Time Standard Deviation (lower is more consistent).
 
-destructive volatility
+The ideal position on this chart is the top-left quadrant, representing drivers who are both fast (low delta) and consistent (low standard deviation).
 
-Output: Asymmetric risk-adjusted performance
-Role: Complements Sharpe, adds behavioral nuance
 
-### 3. Execution Profile — How Performance Is Delivered
+!Pace vs Consistency Plot (plots/2025_Hungarian_Grand_Prix_Pace_Consistency_Scatter.png)
 
-Question:
-What did the race actually look like?
-
-Here, the project becomes behavioral.
-
-We model:
-
-smooth vs turbulent execution
-
-improving vs fading performance
-
-intra-race shape of performance
-
-Output: Execution curves and shape signatures
-Role: Narrative engine + reusable behavioral representation
-
-### 4. Track & Regime Sensitivity — Context Dependence
-
-Question:
-When does a driver’s execution work—and when doesn’t it?
-
-We introduce race regimes:
-
-degradation profiles
-
-aero vs traction sensitivity
-
-overtaking constraints
-
-volatility environments
-
-This is the bridge from description → inference.
-
-Output: Driver × track regime sensitivity matrix
-Role: Makes prediction possible without hype
-
-### 5. Drawdown & Recovery — Fragility vs Resilience
-
-Question:
-What happens when things go wrong?
-
-We analyze:
-
-depth of collapse
-
-speed of recovery
-
-volatility decay vs compounding
-
-This captures downside dynamics that averages hide.
-
-Output: Drawdown severity and recovery half-life
-Role: Essential for season-level modeling
-
-### 6. Consistency Across Races — Repeatability
-
-Question:
-Is this structural skill or situational brilliance?
-
-We test:
-
-temporal stability
-
-cross-context persistence
-
-regime robustness
-
-This guards against overfitting and narrative traps.
-
-Output: Stability scores and confidence bands
-Role: Converts insight into conviction
-
-### 7. Synthesis — From Profiles to Probabilities
-
-Final Question:
-Given this context, who is structurally advantaged?
-
-We combine:
-
-efficiency
-
-aggression
-
-execution style
-
-context sensitivity
-
-resilience
-
-consistency
-
-The result is probabilistic advantage, not predictions.
-
-Output: Driver advantage distributions by race context
-Role: Decision-grade inference
-
-## What This Project Is (and Isn’t)
-
-QuantF1 is:
-
-A research framework
-
-A modeling pipeline
-
-A lens for reasoning under uncertainty
-
-A bridge between sports and quantitative finance
-
-QuantF1 is not:
-
-A prediction bot
-
-A hype machine
-
-A ranking generator
-
-A fantasy optimizer
-
-## Why QuantF1 Exists
-
-Most F1 analysis collapses complexity into:
-
-lap times
-
-positions
-
-opinions
-
-QuantF1 keeps complexity but gives it structure.
-
-This is a framework for thinking clearly about performance when:
-
-the data is noisy
-
-the environment shifts
-
-and outcomes lie
-
-## Status
-
-- 🚧 Active research project
-- 📈 Metrics evolving
+(This plot shows an example of the Pace vs. Consistency analysis for the 2025 Hungarian Grand Prix.)
