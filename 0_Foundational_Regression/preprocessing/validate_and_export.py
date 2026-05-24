@@ -4,8 +4,8 @@ import pandas as pd
 
 
 REQUIRED_COLUMNS = [
-    'Driver', 'Team', 'Compound', 'LapNumber', 'Stint',
-    'lap_in_stint', 'fuel_kg', 'lap_time_seconds',
+    'Driver', 'Team', 'Compound', 'compound_condition', 'LapNumber', 'Stint',
+    'lap_in_stint', 'stint_id', 'fuel_kg', 'lap_time_seconds',
     'lap_time_fuel_corrected', 'anomaly_flag',
 ]
 
