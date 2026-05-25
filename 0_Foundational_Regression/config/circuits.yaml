@@ -1,0 +1,60 @@
+# Circuit-level metadata for the foundational regression.
+# Keyed by FastF1 `Location` field. Anything not listed inherits from `defaults`.
+# `fuel_burn_per_lap` is derived at runtime from race length, not configured here.
+
+defaults:
+  starting_fuel_kg: 110.0
+  fuel_reserve_kg: 1.5    # leave a little reserve so end-of-race fuel_kg stays positive
+  fuel_cost_per_kg: 0.03
+  weather: dry
+  circuit_type: permanent
+
+# Aliases let legacy single-race callers (e.g. preprocess_race(2025, 'Hungary'))
+# still resolve to the same circuit config as the orchestrator's Location-keyed call.
+aliases:
+  Hungary: Budapest
+  Bahrain: Sakhir
+  Saudi Arabia: Jeddah
+  Australia: Melbourne
+  Japan: Suzuka
+  China: Shanghai
+  Italy: Imola                # ambiguous; prefer Location keys for orchestrator
+  Spain: Barcelona
+  Canada: Montréal
+  Austria: Spielberg
+  United Kingdom: Silverstone
+  Belgium: Spa-Francorchamps
+  Netherlands: Zandvoort
+  Azerbaijan: Baku
+  Singapore: Marina Bay
+  Mexico: Mexico City
+  Brazil: São Paulo
+  Qatar: Lusail
+  United Arab Emirates: Yas Island
+
+circuits:
+  Sakhir:             {circuit_type: permanent}
+  Jeddah:             {circuit_type: street}
+  Melbourne:          {circuit_type: street}
+  Suzuka:             {circuit_type: permanent}
+  Shanghai:           {circuit_type: permanent}
+  Miami:              {circuit_type: street}
+  Miami Gardens:      {circuit_type: street}
+  Imola:              {circuit_type: permanent}
+  Monaco:             {circuit_type: street}
+  Montréal:           {circuit_type: street}
+  Barcelona:          {circuit_type: permanent}
+  Spielberg:          {circuit_type: permanent}
+  Silverstone:        {circuit_type: permanent}
+  Budapest:           {circuit_type: permanent}
+  Spa-Francorchamps:  {circuit_type: permanent}
+  Zandvoort:          {circuit_type: permanent}
+  Monza:              {circuit_type: permanent}
+  Baku:               {circuit_type: street}
+  Marina Bay:         {circuit_type: street}
+  Austin:             {circuit_type: permanent}
+  Mexico City:        {circuit_type: permanent}
+  São Paulo:          {circuit_type: permanent}
+  Las Vegas:          {circuit_type: street}
+  Lusail:             {circuit_type: permanent}
+  Yas Island:         {circuit_type: permanent}
