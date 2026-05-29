@@ -212,3 +212,5 @@ __marimo__/
 /cache
 .claude
 0_Foundational_Regression/data/processed
+0_Foundational_Regression/results/
+
